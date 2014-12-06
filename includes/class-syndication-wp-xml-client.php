@@ -437,17 +437,13 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		</p>
 		<p>
 			<select name="default_post_type" id="default_post_type">
-
 			<?php
-
 			$post_types = get_post_types();
 
-			foreach ( $post_types as $post_type ) {
-				echo '<option value="' . esc_attr( $post_type ) . '"' . selected( $post_type, $default_post_type ) . '>' . esc_html( $post_type ) . '</option>';
-			}
-
-			?>
-
+			foreach ( $post_types as $post_type ) :
+				?>
+				<option value="<?php esc_attr( $post_type ); ?>" <?php selected( $post_type, $default_post_type ); ?>><?php esc_html( $post_type ); ?></option>
+			<?php endforeach; ?>
 			</select>
 		</p>
 		<p>
@@ -455,17 +451,13 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		</p>
 		<p>
 			<select name="default_post_status" id="default_post_status">
-
 			<?php
-
 			$post_statuses = get_post_statuses();
 
-			foreach ( $post_statuses as $key => $value ) {
-				echo '<option value="' . esc_attr( $key ) . '"' . selected( $key, $default_post_status ) . '>' . esc_html( $key ) . '</option>';
-			}
-
-			?>
-
+			foreach ( $post_statuses as $key => $value ) : 
+				?>
+				<option value="<?php esc_attr( $key ); ?>" <?php selected( $key, $default_post_status ); ?>><?php esc_html( $key ); ?></option>
+			<?php endforeach; ?>
 			</select>
 		</p>
 		<p>
@@ -535,17 +527,19 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		</p>
 		<p>
 			<select name="categories" id="categories" multiple="multiple">
-				<?php $site_categories = get_categories( array( 'hide_empty' => 0 ) );
-				foreach ( $site_categories as $category ) {
+				<?php
+				$site_categories = get_categories( array( 'hide_empty' => 0 ) );
+				
+				foreach ( $site_categories as $category ) :
 					if ( isset( $categories ) ) {
+						// @todo Check if we can use selected() helper function here.
 						$selected = in_array( $category->cat_ID, $categories ) ? 'selected="selected"' : null;
+					} else {
+						$selected = '';
 					}
-					$option = '<option value="' . $category->cat_ID . '" ' . $selected . '>';
-					$option .= $category->category_nicename;
-					$option .= '</option>';
-					echo $option;
-				}
-				?>
+					?>
+					<option value="<?php echo esc_attr( $category->cat_ID ); ?>" <?php echo esc_attr( $selected ); ?>><?php esc_html_e( $category->category_nicename ); ?></option>
+				<?php endforeach; ?>
 			</select>
 		</p>
 
