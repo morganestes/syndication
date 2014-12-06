@@ -436,7 +436,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			<label for="default_post_type"><?php esc_html_e( 'Select post type', 'push-syndication' ); ?></label>
 		</p>
 		<p>
-			<select name="default_post_type" id="default_post_type" />
+			<select name="default_post_type" id="default_post_type">
 
 			<?php
 
@@ -454,7 +454,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			<label for="default_post_status"><?php esc_html_e( 'Select post status', 'push-syndication' ); ?></label>
 		</p>
 		<p>
-			<select name="default_post_status" id="default_post_status" />
+			<select name="default_post_status" id="default_post_status">
 
 			<?php
 
@@ -472,7 +472,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			<label for="default_comment_status"><?php esc_html_e( 'Select comment status', 'push-syndication' ); ?></label>
 		</p>
 		<p>
-			<select name="default_comment_status" id="default_comment_status" />
+			<select name="default_comment_status" id="default_comment_status">
 			<option value="open" <?php selected( 'open', $default_comment_status ) ?>><?php _e( 'open', 'push-syndication' ); ?></option>
 			<option value="closed" <?php selected( 'closed', $default_comment_status ) ?>><?php _e( 'closed', 'push-syndication' ); ?></option>
 			</select>
@@ -481,7 +481,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			<label for="default_ping_status"><?php esc_html_e( 'Select ping status', 'push-syndication' ); ?></label>
 		</p>
 		<p>
-			<select name="default_ping_status" id="default_ping_status" />
+			<select name="default_ping_status" id="default_ping_status">
 			<option value="open" <?php selected( 'open', $default_ping_status ) ?> ><?php _e( 'open', 'push-syndication' ); ?></option>
 			<option value="closed" <?php selected( 'closed', $default_ping_status ) ?> ><?php _e( 'closed', 'push-syndication' ); ?></option>
 			</select>
@@ -534,7 +534,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 
 		</p>
 		<p>
-			<select name="categories" multiple="multiple">
+			<select name="categories" id="categories" multiple="multiple">
 				<?php $site_categories = get_categories( array( 'hide_empty' => 0 ) );
 				foreach ( $site_categories as $category ) {
 					if ( isset( $categories ) ) {
