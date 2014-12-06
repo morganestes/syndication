@@ -1,5 +1,22 @@
 <?php
+/**
+ * The XML pull client for the Syndication plugin
+ * 
+ * Client for the Syndication plugin to pull in XML feeds for consumption.
+ * This was added after the initial 1.0.0 release, but no other releases 
+ * have been tagged since. See {@link http://git.io/WhLkGQ} for details.
+ * 
+ * @link https://wordpress.org/plugins/push-syndication/
+ * @link https://github.com/Automattic/syndication/
+ * @since 2.1.0
+ * 
+ * @package WordPress
+ * @subpackage Syndication
+ */
 
+/**
+ * Load the {@see Syndication_Client} interface.
+ */
 include_once( dirname( __FILE__ ) . '/interface-syndication-client.php' );
 
 class Syndication_WP_XML_Client implements Syndication_Client {
@@ -17,6 +34,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 
 	private $feed_url;
 
+	/**
+	 * @param $site_ID
+	 */
 	function __construct( $site_ID ) {
 		$this->site_ID = $site_ID;
 		$this->set_feed_url( get_post_meta( $site_ID, 'syn_feed_url', true ) );
@@ -42,9 +62,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
-	 * Return Client Data
-	 *
-	 * @return array array( 'id' => (string) $transport_name, 'modes' => array( 'push', 'pull' ), 'name' => (string) $name );
+	 * @param $url
 	 */
 	private function set_feed_url( $url ) {
 
@@ -57,22 +75,46 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	public static function get_client_data() {
 		return array( 'id' => 'WP_XML', 'modes' => array( 'pull' ), 'name' => 'XML' );
 	}
 
+	/**
+	 * @param int $post_ID
+	 *
+	 * @return bool
+	 */
 	public function new_post( $post_ID ) {
 		return false; // Not supported
 	}
 
+	/**
+	 * @param int $post_ID
+	 * @param int $ext_ID
+	 *
+	 * @return bool
+	 */
 	public function edit_post( $post_ID, $ext_ID ) {
 		return false; // Not supported
 	}
 
+	/**
+	 * @param int $ext_ID
+	 *
+	 * @return bool
+	 */
 	public function delete_post( $ext_ID ) {
 		return false; // Not supported
 	}
 
+	/**
+	 * @param int $ext_ID
+	 *
+	 * @return bool
+	 */
 	public function get_post( $ext_ID ) {
 		return false; // Not supported
 	}
@@ -735,18 +777,45 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		return true;
 	}
 
+	/**
+	 * @param $result
+	 * @param $post
+	 * @param $site
+	 * @param $transport_type
+	 * @param $client
+	 */
 	public static function publish_pulled_post( $result, $post, $site, $transport_type, $client ) {
 		wp_publish_post( $result );
 	}
 
+	/**
+	 * @param $result
+	 * @param $post
+	 * @param $site
+	 * @param $transport_type
+	 * @param $client
+	 */
 	public static function log_new( $result, $post, $site, $transport_type, $client ) {
 		self::log_post( $result, $post, $site, __( 'new', 'push-syndication' ) );
 	}
 
+	/**
+	 * @param $result
+	 * @param $post
+	 * @param $site
+	 * @param $transport_type
+	 * @param $client
+	 */
 	public static function log_update( $result, $post, $site, $transport_type, $client ) {
 		self::log_post( $result, $post, $site, __( 'update', 'push-syndication' ) );
 	}
 
+	/**
+	 * @param $post_id
+	 * @param $post
+	 * @param $site
+	 * @param $status
+	 */
 	private static function log_post( $post_id, $post, $site, $status ) {
 		// TODO: need to limit how many log entries can be added
 		$log_entry            = array();
@@ -766,6 +835,13 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		update_post_meta( $site->ID, 'syn_log', $log );
 	}
 
+	/**
+	 * @param $result
+	 * @param $post
+	 * @param $site
+	 * @param $transport_type
+	 * @param $client
+	 */
 	public static function save_meta( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['postmeta'] ) ) {
 			return false;
@@ -796,6 +872,13 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		}
 	}
 
+	/**
+	 * @param $result
+	 * @param $post
+	 * @param $site
+	 * @param $transport_type
+	 * @param $client
+	 */
 	public static function update_meta( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['postmeta'] ) ) {
 			return false;
@@ -826,6 +909,13 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		}
 	}
 
+	/**
+	 * @param $result
+	 * @param $post
+	 * @param $site
+	 * @param $transport_type
+	 * @param $client
+	 */
 	public static function save_tax( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['tax'] ) ) {
 			return false;
@@ -840,6 +930,13 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		}
 	}
 
+	/**
+	 * @param $result
+	 * @param $post
+	 * @param $site
+	 * @param $transport_type
+	 * @param $client
+	 */
 	public static function update_tax( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['tax'] ) ) {
 			return false;
@@ -862,6 +959,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		}
 	}
 
+	/**
+	 * @return array|string|\WP_Error
+	 */
 	public function fetch_feed() {
 		$request = wp_remote_get( $this->feed_url );
 		if ( is_wp_error( $request ) ) {
