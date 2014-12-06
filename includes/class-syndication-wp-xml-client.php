@@ -35,7 +35,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	private $feed_url;
 
 	/**
-	 * @param $site_ID
+	 * Class constructor.
+	 * 
+	 * @param int $site_ID The ID of the site to pull feeds from.
 	 */
 	function __construct( $site_ID ) {
 		$this->site_ID = $site_ID;
@@ -62,7 +64,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
-	 * @param $url
+	 * Sets the URL of the external feed to pull from.
+	 * 
+	 * @param string $url The URL of the feed to pull.
 	 */
 	private function set_feed_url( $url ) {
 
@@ -76,6 +80,8 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Gets the client data to pass along.
+	 * 
 	 * @return array
 	 */
 	public static function get_client_data() {
@@ -83,8 +89,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Required by the interface, but not used here.
+	 * 
 	 * @param int $post_ID
-	 *
 	 * @return bool
 	 */
 	public function new_post( $post_ID ) {
@@ -92,9 +99,10 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Required by the interface, but not used here.
+	 * 
 	 * @param int $post_ID
 	 * @param int $ext_ID
-	 *
 	 * @return bool
 	 */
 	public function edit_post( $post_ID, $ext_ID ) {
@@ -102,8 +110,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Required by the interface, but not used here.
+	 * 
 	 * @param int $ext_ID
-	 *
 	 * @return bool
 	 */
 	public function delete_post( $ext_ID ) {
@@ -111,8 +120,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Required by the interface, but not used here.
+	 * 
 	 * @param int $ext_ID
-	 *
 	 * @return bool
 	 */
 	public function get_post( $ext_ID ) {
@@ -120,10 +130,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
-	 * Retrieves a list of posts from a slave site.
+	 * Retrieves a list of posts from a remote site.
 	 *
 	 * @param   array $args Arguments when retrieving posts.
-	 *
 	 * @return  boolean true on success false on failure.
 	 */
 	public function get_posts( $args = array() ) {
@@ -307,9 +316,11 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
-	 * @param array $enclosures
-	 *
-	 * @return array
+	 * Get enclosures (images/attachments) from a feed.
+	 * 
+	 * @param array $feed_enclosures Optional.
+	 * @param array $enc_nodes Optional.
+	 * @return array The list of enclosures in the feed.
 	 */
 	private function get_encs( $feed_enclosures = array(), $enc_nodes = array() ) {
 		$enclosures = array();
@@ -355,18 +366,17 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	/**
 	 * Test the connection with the slave site.
 	 *
-	 * @return  boolean  true on success false on failure.
+	 * @return bool True on success; false on failure.
 	 */
 	public function test_connection() {
 		return ! is_wp_error( $this->fetch_feed() );
 	}
 
 	/**
-	 * Checks whether the given post exists in the slave site.
+	 * Required by the interface, but not used here.
 	 *
-	 * @param   int $ext_ID Slave post ID to check.
-	 *
-	 * @return  boolean  true on success false on failure.
+	 * @param int $ext_ID External post ID to check.
+	 * @return bool
 	 */
 	public function is_post_exists( $ext_ID ) {
 		return false; // Not supported
@@ -716,15 +726,15 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
-	 * Save the client settings for the slave site.
+	 * Save the client settings for the remote site.
 	 *
 	 * @param   int $site_ID The site ID to save settings.
-	 *
-	 * @return  boolean  true on success false on failure.
+	 * @return  bool True on success; false on failure.
 	 */
 	public static function save_settings( $site_ID ) {
 		// TODO: adjust to save all settings required by XML feed
 		// TODO: validate saved values (e.g. valid post_type? valid status?)
+		// TODO: actually check if saving was successful or not and return a proper bool
 
 		update_post_meta( $site_ID, 'syn_feed_url', esc_url_raw( $_POST['feed_url'] ) );
 		update_post_meta( $site_ID, 'syn_default_post_type', sanitize_text_field( $_POST['default_post_type'] ) );
@@ -778,6 +788,8 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Publish the remote post to the local site.
+	 * 
 	 * @param $result
 	 * @param $post
 	 * @param $site
@@ -789,6 +801,8 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Log the success or failure of saving a new post.
+	 * 
 	 * @param $result
 	 * @param $post
 	 * @param $site
@@ -800,6 +814,8 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Log the success or failure of updating a post.
+	 * 
 	 * @param $result
 	 * @param $post
 	 * @param $site
@@ -811,6 +827,8 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Add the post data to the log.
+	 * 
 	 * @param $post_id
 	 * @param $post
 	 * @param $site
@@ -836,11 +854,14 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Save post meta for the specified post.
+	 * 
 	 * @param $result
 	 * @param $post
 	 * @param $site
 	 * @param $transport_type
 	 * @param $client
+	 * @return mixed False if an error of if the data to save isn't passed.
 	 */
 	public static function save_meta( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['postmeta'] ) ) {
@@ -873,11 +894,14 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
+	 * Update post meta for the specified post.
+	 * 
 	 * @param $result
 	 * @param $post
 	 * @param $site
 	 * @param $transport_type
 	 * @param $client
+	 * @return mixed False if an error of if the data to save isn't passed.
 	 */
 	public static function update_meta( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['postmeta'] ) ) {
@@ -915,6 +939,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	 * @param $site
 	 * @param $transport_type
 	 * @param $client
+	 * @return mixed False if an error of if the data to save isn't passed.
 	 */
 	public static function save_tax( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['tax'] ) ) {
@@ -936,6 +961,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	 * @param $site
 	 * @param $transport_type
 	 * @param $client
+	 * @return mixed False if an error of if the data to save isn't passed.
 	 */
 	public static function update_tax( $result, $post, $site, $transport_type, $client ) {
 		if ( ! $result || is_wp_error( $result ) || ! isset( $post['tax'] ) ) {
@@ -960,7 +986,9 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	}
 
 	/**
-	 * @return array|string|\WP_Error
+	 * Fetch a remote feed.
+	 * 
+	 * @return string|WP_Error The content of the remote feed, or error if there's a problem.
 	 */
 	public function fetch_feed() {
 		$request = wp_remote_get( $this->feed_url );
