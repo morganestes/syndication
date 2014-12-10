@@ -540,7 +540,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		</p>
 
 		<p>
-			<label for="id_node"><?php esc_html_e( 'Enter post meta key for unique post identifier', 'push-syndication' ); ?></label>
+			<label for="id_field"><?php esc_html_e( 'Enter post meta key for unique post identifier', 'push-syndication' ); ?></label>
 		</p>
 		<p>
 			<input type="text" name="id_field" id="id_field" value="<?php echo esc_attr( $id_field ); ?>" />
