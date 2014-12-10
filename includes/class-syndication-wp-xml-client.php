@@ -633,31 +633,33 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 				$( '.syn-pull-xpath-add-new' ).on( 'click', function ( e ) {
 					e.preventDefault();
 
-					var $last_form = $( '.syn-xml-client-xpath-form:last' ),
-					    $new_form = $last_form.clone(),
-					    original_row_count = parseInt( $last_form.attr( 'data-row-count' ) );
+					var $lastForm = $( '.syn-xml-client-xpath-form:last' ),
+					    $newForm = $lastForm.clone(),
+					    originalRowCount = parseInt( $lastForm.attr( 'data-row-count' ) ),
+					    newRowCount = originalRowCount + 1;
 
-					new_row_count = original_row_count + 1;
+					$newForm.attr( 'data-row-count', newRowCount );
 
-					$new_form.attr( 'data-row-count', new_row_count );
-
-					$new_form.find( 'input' ).each( function () {
+					$newForm.find( 'input' ).each( function () {
 						var $this = $( this ),
 						    name = $this.attr( 'name' ),
 						    type = $this.attr( 'type' );
 
-						if ( type == 'radio' || type == 'checkbox' )
+						if ( 'radio' === type || 'checkbox' === type ) {
 							$this.attr( 'checked', false );
-						else if ( type == 'select' )
+						}
+						else if ( 'select' === type ) {
 							$this.attr( 'selected', false );
-						else
+						}
+						else {
 							$this.val( '' );
+						}
 
-						name = name.replace( '[' + ( original_row_count ) + ']', '[' + new_row_count + ']' );
+						name = name.replace( '[' + ( originalRowCount ) + ']', '[' + newRowCount + ']' );
 						$this.attr( 'name', name ); // hack hack hack!!!
 					} );
 
-					$new_form.insertAfter( $last_form );
+					$newForm.insertAfter( $lastForm );
 				} );
 			} );
 		</script>
