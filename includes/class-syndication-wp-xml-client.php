@@ -20,7 +20,7 @@
 include_once( dirname( __FILE__ ) . '/interface-syndication-client.php' );
 
 class Syndication_WP_XML_Client implements Syndication_Client {
-
+	
 	private $site_ID;
 
 	private $default_post_type;
@@ -33,6 +33,11 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 	private $enc_is_photo;
 
 	private $feed_url;
+
+	/**
+	 * @var string
+	 */
+	private $error_message = '';
 
 	/**
 	 * Class constructor.
@@ -199,6 +204,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			return array();
 		}
 
+		/** @var SimpleXMLElement $xml */
 		$xml = simplexml_load_string( $feed, null, 0, $namespace, false );
 
 		if ( false === $xml ) {
@@ -400,31 +406,22 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		$id_field               = get_post_meta( $site->ID, 'syn_id_field', true );
 		$enc_field              = get_post_meta( $site->ID, 'syn_enc_field', true );
 		$enc_is_photo           = get_post_meta( $site->ID, 'syn_enc_is_photo', true );
-
 		$last_update_time = get_post_meta( $site->ID, 'syn_last_pull_time', true );
 
-		if ( isset( $node_config['namespace'] ) ) {
-			$namespace = $node_config['namespace'];
-		}
-
 		//unset is outside of isset() test to remove the item from the array if the key is there with no value
+		$namespace = isset( $node_config['namespace'] ) ? $node_config['namespace'] : null;
 		unset( $node_config['namespace'] );
-		if ( isset( $node_config['post_root'] ) ) {
-			$post_root = $node_config['post_root'];
-		}
+		
+		$post_root = isset( $node_config['post_root'] ) ? $node_config['post_root'] : null;
 		unset( $node_config['post_root'] );
-		if ( isset( $node_config['enc_parent'] ) ) {
-			$enc_parent = $node_config['enc_parent'];
-		}
+		
+		$enc_parent = isset( $node_config['enc_parent'] ) ? $node_config['enc_parent'] : null;
 		unset( $node_config['enc_parent'] );
 
-		if ( isset( $node_config['categories'] ) && ! empty( $node_config['categories'] ) ) {
-			$categories = (array) $node_config['categories'];
-		}
+		$categories = isset( $node_config['categories'] ) && ! empty( $node_config['categories'] ) ? (array) $node_config['categories'] : null;
 		unset( $node_config['categories'] );
 
 		$custom_nodes = $node_config['nodes'];
-
 		?>
 		<p>
 			<label for="feed_url"><?php esc_html_e( 'Enter feed URL', 'push-syndication' ); ?></label>
