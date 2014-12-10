@@ -75,7 +75,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		if ( parse_url( $url ) ) {
 			$this->feed_url = $url;
 		} else {
-			$this->error_message = sprintf( __( 'Feed url not set for this feed: %s', 'push-syndication' ), $this->site_ID );
+			$this->error_message = sprintf( __( 'Feed URL not set for this feed: %s', 'push-syndication' ), $this->site_ID );
 		}
 	}
 
@@ -237,7 +237,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		$items         = $xml->xpath( $post_root );
 
 		if ( empty( $items ) ) {
-			self::log_post( 'n/a', null, get_post( $this->site_ID ), sprintf( __( 'No post nodes found using XPath "%s" in feed', 'push-syndication' ), $post_root ) );
+			self::log_post( 'n/a', null, get_post( $this->site_ID ), sprintf( __( 'No post nodes found using XPath "%s" in feed.', 'push-syndication' ), $post_root ) );
 
 			return array();
 		}
@@ -487,14 +487,14 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		</p>
 
 		<p>
-			<label for="post_root"><?php esc_html_e( 'Enter xpath to post root', 'push-syndication' ); ?></label>
+			<label for="post_root"><?php esc_html_e( 'Enter XPath to post root', 'push-syndication' ); ?></label>
 		</p>
 		<p>
 			<input type="text" name="post_root" id="post_root" value="<?php echo esc_attr( $post_root ); ?>" />
 		</p>
 
 		<p>
-			<label for="id_node"><?php esc_html_e( 'Enter postmeta key for unique post identifier', 'push-syndication' ); ?></label>
+			<label for="id_node"><?php esc_html_e( 'Enter post meta key for unique post identifier', 'push-syndication' ); ?></label>
 		</p>
 		<p>
 			<input type="text" name="id_field" id="id_field" value="<?php echo esc_attr( $id_field ); ?>" />
@@ -545,11 +545,11 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 
 		<h2><?php _e( 'XPath-to-Data Mapping', 'push-syndication' ); ?></h2>
 
-		<p><?php printf( __( '<strong>PLEASE NOTE:</strong> %s are required. If you want a link to another site, %s required. To include a static string, enclose the string as "%s(your_string_here)" -- no quotes.', 'push-syndication' ), 'post_title, post_guid, guid', 'is_permalink', 'string' ); ?></p>
+		<p><?php printf( __( '<strong>PLEASE NOTE:</strong> %s are required. If you want a link to another site, %s is required. To include a static string, enclose the string as "%s(your_string_here)" &mdash; no quotes.', 'push-syndication' ), 'post_title, post_guid, guid', 'is_permalink', 'string' ); ?></p>
 
 		<ul class='syn-xml-client-xpath-head syn-xml-client-list-head'>
 			<li class="text">
-				<label for="xpath"><?php esc_html_e( 'Xpath Expression', 'push-syndication' ) ?></label>
+				<label for="xpath"><?php esc_html_e( 'XPath Expression', 'push-syndication' ) ?></label>
 			</li>
 			<li>
 				<label for="item_node"><?php esc_html_e( 'Item', 'push-syndication' ) ?></label>
@@ -564,7 +564,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 				<label for="tax_node"><?php esc_html_e( 'Tax', 'push-syndication' ) ?></label>
 			</li>
 			<li class="text">
-				<label for="item_field"><?php esc_html_e( 'Field in post', 'push-syndication' ) ?></label>
+				<label for="item_field"><?php esc_html_e( 'Field in Post', 'push-syndication' ) ?></label>
 			</li>
 		</ul>
 
@@ -698,7 +698,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 						if ( gettype( $log_row['post_id'] ) == 'integer' ) {
 							edit_post_link( $log_row['post_id'], null, null, $log_row['post_id'] );
 						} else {
-							echo "ERROR";
+							echo 'ERROR';
 						}
 						?>
 					</li>
