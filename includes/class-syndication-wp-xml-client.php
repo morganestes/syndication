@@ -19,19 +19,59 @@
  */
 include_once( dirname( __FILE__ ) . '/interface-syndication-client.php' );
 
+/**
+ * Class Syndication_WP_XML_Client
+ */
 class Syndication_WP_XML_Client implements Syndication_Client {
-	
+
+	/**
+	 * @var int
+	 */
 	private $site_ID;
 
+	/**
+	 * @var string
+	 */
 	private $default_post_type;
+	
+	/**
+	 * @var string
+	 */
 	private $default_post_status;
+	
+	/**
+	 * @var string
+	 */
 	private $default_comment_status;
+	
+	/**
+	 * @var string
+	 */
 	private $default_ping_status;
+	
+	/**
+	 * @var array
+	 */
 	private $nodes_to_post;
+	
+	/**
+	 * @var mixed
+	 */
 	private $id_field;
+	
+	/**
+	 * @var mixed
+	 */
 	private $enc_field;
+	
+	/**
+	 * @var bool
+	 */
 	private $enc_is_photo;
 
+	/**
+	 * @var string
+	 */
 	private $feed_url;
 
 	/**
