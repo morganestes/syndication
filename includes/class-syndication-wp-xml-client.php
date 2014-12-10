@@ -224,6 +224,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 				} else {
 					$value_array = $xml->xpath( stripslashes( $abs_node['xpath'] ) );
 				}
+				
 				if ( $abs_node['is_meta'] ) {
 					$abs_meta_data[ $abs_node['field'] ] = (string) $value_array[0];
 				} else if ( $abs_node['is_tax'] ) {
@@ -274,7 +275,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 						//SimpleXMLElement::xpath returns either an array or false if an element isn't returned
 						//checking $value_array first avoids the warning we get if the field isn't found
 						if ( $value_array && ( count( $value_array ) > 1 ) ) {
-							$value_array                          = array_map( 'strval', $value_array );
+							$value_array = array_map( 'strval', $value_array );
 							$meta_data[ $save_location['field'] ] = $value_array;
 						} else if ( $value_array ) {
 							//return a string if $value_array contains only a single element
@@ -295,18 +296,24 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 					return array();
 				}
 			}
+			
 			$meta_data = array_merge( $meta_data, $abs_meta_data );
 			$tax_data  = array_merge( $tax_data, $abs_tax_data );
+			
 			if ( ! empty( $enc_field ) ) {
 				$meta_data['enc_field'] = $enc_field;
 			}
+			
 			if ( ! isset( $meta_data['position'] ) ) {
 				$meta_data['position'] = $post_position;
 			}
+			
 			$item_fields['postmeta'] = $meta_data;
+			
 			if ( ! empty( $tax_data ) ) {
 				$item_fields['tax'] = $tax_data;
 			}
+			
 			$item_fields['post_category'] = $categories;
 
 			if ( ! empty( $meta_data[ $this->id_field ] ) ) {
@@ -339,12 +346,14 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 					'url'         => '',
 					'width'       => '',
 					'height'      => '',
-					'position'    => ''
+					'position'    => '',
 				);
 			} else {
 				$enc_array = array();
 			}
+			
 			$enc_value = array();
+			
 			foreach ( $enc_nodes as $post_value ) {
 				try {
 					if ( 'string(' == substr( $post_value['xpath'], 0, 7 ) ) {
@@ -406,7 +415,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		$id_field               = get_post_meta( $site->ID, 'syn_id_field', true );
 		$enc_field              = get_post_meta( $site->ID, 'syn_enc_field', true );
 		$enc_is_photo           = get_post_meta( $site->ID, 'syn_enc_is_photo', true );
-		$last_update_time = get_post_meta( $site->ID, 'syn_last_pull_time', true );
+		$last_update_time       = get_post_meta( $site->ID, 'syn_last_pull_time', true );
 
 		//unset is outside of isset() test to remove the item from the array if the key is there with no value
 		$namespace = isset( $node_config['namespace'] ) ? $node_config['namespace'] : null;
@@ -437,10 +446,10 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			<?php
 			$post_types = get_post_types();
 
-			foreach ( $post_types as $post_type ) :
+			foreach ( $post_types as $post_type ) {
 				?>
 				<option value="<?php esc_attr( $post_type ); ?>" <?php selected( $post_type, $default_post_type ); ?>><?php esc_html( $post_type ); ?></option>
-			<?php endforeach; ?>
+			<?php } ?>
 			</select>
 		</p>
 		<p>
@@ -451,10 +460,10 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			<?php
 			$post_statuses = get_post_statuses();
 
-			foreach ( $post_statuses as $key => $value ) : 
+			foreach ( $post_statuses as $key => $value ) {
 				?>
 				<option value="<?php esc_attr( $key ); ?>" <?php selected( $key, $default_post_status ); ?>><?php esc_html( $key ); ?></option>
-			<?php endforeach; ?>
+			<?php } ?>
 			</select>
 		</p>
 		<p>
@@ -462,8 +471,8 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		</p>
 		<p>
 			<select name="default_comment_status" id="default_comment_status">
-			<option value="open" <?php selected( 'open', $default_comment_status ) ?>><?php _e( 'open', 'push-syndication' ); ?></option>
-			<option value="closed" <?php selected( 'closed', $default_comment_status ) ?>><?php _e( 'closed', 'push-syndication' ); ?></option>
+			<option value="open" <?php selected( 'open', $default_comment_status ); ?>><?php _e( 'open', 'push-syndication' ); ?></option>
+			<option value="closed" <?php selected( 'closed', $default_comment_status ); ?>><?php _e( 'closed', 'push-syndication' ); ?></option>
 			</select>
 		</p>
 		<p>
@@ -471,8 +480,8 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		</p>
 		<p>
 			<select name="default_ping_status" id="default_ping_status">
-			<option value="open" <?php selected( 'open', $default_ping_status ) ?> ><?php _e( 'open', 'push-syndication' ); ?></option>
-			<option value="closed" <?php selected( 'closed', $default_ping_status ) ?> ><?php _e( 'closed', 'push-syndication' ); ?></option>
+			<option value="open" <?php selected( 'open', $default_ping_status ); ?>><?php _e( 'open', 'push-syndication' ); ?></option>
+			<option value="closed" <?php selected( 'closed', $default_ping_status ); ?>><?php _e( 'closed', 'push-syndication' ); ?></option>
 			</select>
 		</p>
 
@@ -480,7 +489,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 			<label for="namespace"><?php esc_html_e( 'Enter XML namespace', 'push-syndication' ); ?></label>
 		</p>
 		<p>
-			<input type="text" size=75 name="namespace" id="namespace" value="<?php echo esc_attr( $namespace ); ?>" />
+			<input type="text" size="75" name="namespace" id="namespace" value="<?php echo esc_attr( $namespace ); ?>" />
 		</p>
 
 		<p>
@@ -546,22 +555,22 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 
 		<ul class='syn-xml-client-xpath-head syn-xml-client-list-head'>
 			<li class="text">
-				<label for="xpath"><?php esc_html_e( 'XPath Expression', 'push-syndication' ) ?></label>
+				<label for="xpath"><?php esc_html_e( 'XPath Expression', 'push-syndication' ); ?></label>
 			</li>
 			<li>
-				<label for="item_node"><?php esc_html_e( 'Item', 'push-syndication' ) ?></label>
+				<label for="item_node"><?php esc_html_e( 'Item', 'push-syndication' ); ?></label>
 			</li>
 			<li>
-				<label for="photo_node"><?php esc_html_e( 'Enc.', 'push-syndication' ) ?></label>
+				<label for="photo_node"><?php esc_html_e( 'Enc.', 'push-syndication' ); ?></label>
 			</li>
 			<li>
-				<label for="meta_node"><?php esc_html_e( 'Meta', 'push-syndication' ) ?></label>
+				<label for="meta_node"><?php esc_html_e( 'Meta', 'push-syndication' ); ?></label>
 			</li>
 			<li>
-				<label for="tax_node"><?php esc_html_e( 'Tax', 'push-syndication' ) ?></label>
+				<label for="tax_node"><?php esc_html_e( 'Tax', 'push-syndication' ); ?></label>
 			</li>
 			<li class="text">
-				<label for="item_field"><?php esc_html_e( 'Field in Post', 'push-syndication' ) ?></label>
+				<label for="item_field"><?php esc_html_e( 'Field in Post', 'push-syndication' ); ?></label>
 			</li>
 		</ul>
 
@@ -675,16 +684,16 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		if ( ! empty( $syn_log ) ) : ?>
 			<ul class='syn-xml-client-xpath-log-head syn-xml-client-list-head'>
 				<li>
-					<label for="post_id"><?php esc_html_e( 'Post ID', 'push-syndication' ) ?></label>
+					<label for="post_id"><?php esc_html_e( 'Post ID', 'push-syndication' ); ?></label>
 				</li>
 				<li>
-					<label for="status"><?php esc_html_e( 'Status', 'push-syndication' ) ?></label>
+					<label for="status"><?php esc_html_e( 'Status', 'push-syndication' ); ?></label>
 				</li>
 				<li class="wide">
-					<label for="date_time"><?php esc_html_e( 'Date/Time', 'push-syndication' ) ?></label>
+					<label for="date_time"><?php esc_html_e( 'Date/Time', 'push-syndication' ); ?></label>
 				</li>
 				<li>
-					<label for="view"><?php esc_html_e( 'VIEW', 'push-syndication' ) ?></label>
+					<label for="view"><?php esc_html_e( 'VIEW', 'push-syndication' ); ?></label>
 				</li>
 			</ul>
 			<?php
@@ -694,7 +703,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 				<ul class='syn-xml-client-log syn-xml-client-list'>
 					<li>
 						<?php
-						if ( gettype( $log_row['post_id'] ) == 'integer' ) {
+						if ( 'integer' == gettype( $log_row['post_id'] ) ) {
 							edit_post_link( $log_row['post_id'], null, null, $log_row['post_id'] );
 						} else {
 							echo 'ERROR';
