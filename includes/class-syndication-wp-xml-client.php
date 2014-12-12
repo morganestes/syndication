@@ -619,24 +619,24 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		if ( ! empty( $custom_nodes ) ) :
 			foreach ( $custom_nodes as $key => $storage_locations ) :
 				foreach ( $storage_locations as $storage_location ) : ?>
-					<ul class='syn-xml-client-xpath-form syn-xml-client-xpath-list syn-xml-client-list' data-row-count="<?php echo esc_attr( $rowcount ); ?>">
+					<ul class='syn-xml-client-xpath-form syn-xml-client-xpath-list syn-xml-client-list' data-row-count="<?php echo esc_attr( (int) $rowcount ); ?>">
 					<li class="text">
-						<input type="text" name="node[<?php echo $rowcount; ?>][xpath]" id="node-<?php echo $rowcount; ?>-xpath" value="<?php echo htmlspecialchars( stripslashes( $key ) ); ?>" />
+						<input type="text" name="node[<?php echo (int) $rowcount; ?>][xpath]" id="node-<?php echo (int) $rowcount; ?>-xpath" value="<?php echo htmlspecialchars( stripslashes( $key ) ); ?>" />
 					</li>
 					<li>
-						<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_item]" id="node-<?php echo $rowcount; ?>-is_item" <?php checked( $storage_location['is_item'] ); ?> value="true" />
+						<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_item]" id="node-<?php echo (int) $rowcount; ?>-is_item" <?php checked( $storage_location['is_item'] ); ?> value="true" />
 					</li>
 					<li>
-						<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_photo]" id="node-<?php echo $rowcount; ?>-is_photo" <?php checked( $storage_location['is_photo'] ); ?> value="true" />
+						<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_photo]" id="node-<?php echo (int) $rowcount; ?>-is_photo" <?php checked( $storage_location['is_photo'] ); ?> value="true" />
 					</li>
 					<li>
-						<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_meta]" id="node-<?php echo $rowcount; ?>-is_meta" <?php checked( $storage_location['is_meta'] ); ?> value="true" />
+						<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_meta]" id="node-<?php echo (int) $rowcount; ?>-is_meta" <?php checked( $storage_location['is_meta'] ); ?> value="true" />
 					</li>
 					<li>
-						<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_tax]" id="node-<?php echo $rowcount; ?>-is_tax" <?php checked( $storage_location['is_tax'] ); ?> value="true" />
+						<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_tax]" id="node-<?php echo (int) $rowcount; ?>-is_tax" <?php checked( $storage_location['is_tax'] ); ?> value="true" />
 					</li>
 					<li class="text">
-						<input type="text" name="node[<?php echo $rowcount; ?>][field]" id="node-<?php echo $rowcount; ?>-field" value="<?php echo stripcslashes( $storage_location['field'] ); ?>" />
+						<input type="text" name="node[<?php echo (int) $rowcount; ?>][field]" id="node-<?php echo (int) $rowcount; ?>-field" value="<?php echo stripcslashes( $storage_location['field'] ); ?>" />
 					</li>
 					<a href="#" class="syn-delete syn-pull-xpath-delete"><?php _e( 'Delete', 'push-syndication' ); ?></a>
 				<?php endforeach; ?>
@@ -647,24 +647,24 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 		endif;
 		?>
 
-		<ul class='syn-xml-client-xpath-form syn-xml-xpath-list syn-xml-client-list' data-row-count="<?php echo esc_attr( $rowcount ); ?>">
+		<ul class='syn-xml-client-xpath-form syn-xml-xpath-list syn-xml-client-list' data-row-count="<?php echo esc_attr( (int) $rowcount ); ?>">
 			<li class="text">
-				<input type="text" name="node[<?php echo $rowcount; ?>][xpath]" id="node-<?php echo $rowcount; ?>-xpath" />
+				<input type="text" name="node[<?php echo (int) $rowcount; ?>][xpath]" id="node-<?php echo (int) $rowcount; ?>-xpath" />
 			</li>
 			<li>
-				<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_item]" id="node-<?php echo $rowcount; ?>-is_item" />
+				<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_item]" id="node-<?php echo (int) $rowcount; ?>-is_item" />
 			</li>
 			<li>
-				<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_photo]" id="node-<?php echo $rowcount; ?>-is_photo" />
+				<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_photo]" id="node-<?php echo (int) $rowcount; ?>-is_photo" />
 			</li>
 			<li>
-				<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_meta]" id="node-<?php echo $rowcount; ?>-is_meta" />
+				<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_meta]" id="node-<?php echo (int) $rowcount; ?>-is_meta" />
 			</li>
 			<li>
-				<input type="checkbox" name="node[<?php echo $rowcount; ?>][is_tax]" id="node-<?php echo $rowcount; ?>-is_tax" />
+				<input type="checkbox" name="node[<?php echo (int) $rowcount; ?>][is_tax]" id="node-<?php echo (int) $rowcount; ?>-is_tax" />
 			</li>
 			<li class="text">
-				<input type="text" name="node[<?php echo $rowcount; ?>][field]" id="node-<?php echo $rowcount; ?>-field" />
+				<input type="text" name="node[<?php echo (int) $rowcount; ?>][field]" id="node-<?php echo (int) $rowcount; ?>-field" />
 			</li>
 			<a href="#" class="syn-delete syn-pull-xpath-delete"><?php _e( 'Delete', 'push-syndication' ); ?></a>
 		</ul>
