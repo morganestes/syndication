@@ -746,7 +746,7 @@ class Syndication_WP_XML_Client implements Syndication_Client {
 						if ( 'integer' == gettype( $log_row['post_id'] ) ) {
 							edit_post_link( $log_row['post_id'], null, null, $log_row['post_id'] );
 						} else {
-							echo 'ERROR';
+							_e( 'ERROR', 'push-syndication' );
 						}
 						?>
 					</li>
